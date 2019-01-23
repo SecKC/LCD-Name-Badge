@@ -1,4 +1,4 @@
-# SecKC NameBadgeHack
+# SecKC LCD Name Badge
 
 Handle             |  Custom Scrolling Text          | Upload your own Avatar     | SecKC Logos
 :-------------------------:|:-------------------------:|:-------|:-----------------------:
@@ -9,7 +9,7 @@ This is Arduino code for the SecKC Speaker Name Badge.
 Currently, the code was designed and tested on: Node MCU 1.0 (ESP-12E Module) and 1.44 inch TFT SPI 128x128 LCD Display.
 
 Below is a list of items that should be upaded in order to make this badge your very own:
-* Within the main Arduino file BadgeFinalTemplate.ino, update *String handle = "PutHandleHere";*
+* Within the main Arduino file BadgeFinalTemplate.ino, update *String handle = "PutHandleHere";* within the **Handle()** function
 * Within the bitmaps.h file, update *const uint16_t Avatar [] PROGMEM =* 
   
 # Custom Avatar
@@ -27,8 +27,6 @@ Below are instructions on how to have your own custom avatar on the badge:
 * Once done, click *Show Preview* and copy the hex code
 * Within the *bitmaps.h* file, find the  **const uint16_t Avatar [] PROGMEM = {}** section and replace the current code with the new code inside the *{}*. This creates an image matrix of your avatar
 
-Utilize an LCD Image Convertor to take your 128x128 image and convert it to 16-bit hex values. Then copy the values into the bitmaps.h file matrix.
-
 # Upload
 
 Once display is hooked up to the board and the display has been successfully tested, open Arduino IDE and push the Arduino and bitmaps.h file to the board!
@@ -38,3 +36,8 @@ Once display is hooked up to the board and the display has been successfully tes
 If there's any updates that want to be done, feel free to make this badge your own and customize it further! THis is just the first iteration of the SecKC Speaker Name Badge!
 
 Also, you can check out my blog to see the hardware side of this project: https://blog.geoda-security.com/2019/01/seckc-speaker-badge-name-badge-hack.html
+
+# Future Code Updates
+* Would like to update BadgeFinalTemplate.ino with easier to edit functions, rather than all code within the loop
+* Add more to the display, maybe animated gif images??
+* Incorporate more SecKC logos and custom images made by our members
