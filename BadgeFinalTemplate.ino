@@ -6,6 +6,8 @@
 #include <SPI.h>
 #include "bitmaps.h"
 
+#define MAGENTA 0xF81F
+
 #ifdef ADAFRUIT_HALLOWING
   #define TFT_CS        D1 // 39 // Hallowing display control pins: chip select
   #define TFT_RST       D2 // 37 // Display reset
@@ -23,17 +25,120 @@
 
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
 
+String handle = "geoda"; // Update this for your handle to show up throughout badge
+ 
 //////////////////////////////////////////////////////////
 // Print Handle in middle'ish of screen                 //
 //////////////////////////////////////////////////////////
 void Handle(){
-  String handle = "geoda";  // Update this with handle
-  unsigned int handleLength = handle.length(); // Will be used later to center the handle name
+  //String handle = "geoda";  // Update this with handle
+  //unsigned int handleLength = handle.length(); // Will be used later to center the handle name
   tft.setTextWrap(false); 
   tft.setCursor(35,72); // Adjust first value (x axis) to align handle in center
   tft.setTextSize(2);
   tft.setTextColor(ST77XX_BLUE);
   tft.println(handle); 
+}
+
+// Print The SecKC 7 year glitch with Handle
+void HandleGlitchFunc(){
+  // Display Avatar Image
+  // Update h and w for size of avatar
+  int h = 72,w = 128, row, col, buffidx=0;
+  for (row=0; row<h; row++) { // For each scanline...
+    for (col=0; col<w; col++) { // For each pixel...
+      //To read from Flash Memory, pgm_read_XXX is required.
+      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
+      // If needed, add "+X" to col or row to center avatar if less than 128 in size
+      tft.drawPixel(col, row, pgm_read_word(SecKCGlitch + buffidx));
+      buffidx++;
+    } // end pixel
+  }
+  //String handleGlitch = "geoda";  // Update this with handle
+  //unsigned int handleLength = handleGlitch.length(); // Will be used later to center the handle name
+  tft.setTextWrap(false); 
+  tft.setCursor(6,85); // Adjust first value (x axis) to align handle in center
+  tft.setTextSize(4);
+  tft.setTextColor(ST77XX_MAGENTA);
+  tft.println(handle); 
+}
+
+// Print the HAKCER Skyline Image
+void HAKCERSkyline(){
+  // HAKCER Skyline
+  // Update h and w for size of avatar
+  tft.fillScreen(ST77XX_WHITE);
+  int h = 128,w = 82, row, col, buffidx=0;
+  for (row=0; row<h; row++) { // For each scanline...
+    for (col=0; col<w; col++) { // For each pixel...
+      //To read from Flash Memory, pgm_read_XXX is required.
+      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
+      // If needed, add "+X" to col or row to center avatar if less than 128 in size
+      tft.drawPixel(col+23, row, pgm_read_word(HAKCER + buffidx));
+      buffidx++;
+    } // end pixel
+  }
+}
+
+
+// Print your Avatar Image
+void AvatarImage(){
+  // Display Avatar Image
+  // Update h and w for size of avatar
+  tft.fillRect(0,0,128,128,ST77XX_WHITE);
+  int h = 128,w = 91, row, col, buffidx=0;
+  for (row=0; row<h; row++) { // For each scanline...
+    for (col=0; col<w; col++) { // For each pixel...
+      //To read from Flash Memory, pgm_read_XXX is required.
+      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
+      // If needed, add "+X" to col or row to center avatar if less than 128 in size
+      tft.drawPixel(col+18, row, pgm_read_word(Avatar + buffidx));
+      buffidx++;
+    } // end pixel
+  }
+}
+
+// Print Alice in a 128x128
+void Alice128Func(){
+  // HAKCER Skyline
+  // Update h and w for size of avatar
+  tft.fillScreen(ST77XX_WHITE);
+  int h = 128,w = 112, row, col, buffidx=0;
+  for (row=0; row<h; row++) { // For each scanline...
+    for (col=0; col<w; col++) { // For each pixel...
+      //To read from Flash Memory, pgm_read_XXX is required.
+      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
+      // If needed, add "+X" to col or row to center avatar if less than 128 in size
+      tft.drawPixel(col+8, row, pgm_read_word(Alice128 + buffidx));
+      buffidx++;
+    } // end pixel
+  }
+}
+
+// Print Alice Wallpaper
+void AliceWallpaperFunc(){
+  // HAKCER Skyline
+  // Update h and w for size of avatar
+  tft.fillScreen(ST77XX_BLACK);
+  int h = 128,w = 128, row, col, buffidx=0;
+  for (row=0; row<h; row++) { // For each scanline...
+    for (col=0; col<w; col++) { // For each pixel...
+      //To read from Flash Memory, pgm_read_XXX is required.
+      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
+      // If needed, add "+X" to col or row to center avatar if less than 128 in size
+      tft.drawPixel(col, row+1, pgm_read_word(AliceWallpaper + buffidx));
+      buffidx++;
+    } // end pixel
+  }
+  String SecKC = "SecKC";  // Update this with handle
+  //String Handle = "geoda";
+  tft.setTextWrap(false); 
+  tft.setCursor(35,10); // Adjust first value (x axis) to align handle in center
+  tft.setTextSize(2);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.println(SecKC); 
+  tft.setCursor(35,100); // Adjust first value (x axis) to align handle in center
+  tft.println(handle);
 }
 
 void setup(void) {
@@ -60,7 +165,7 @@ void setup(void) {
 //////////////////////////////////////////////////////////
 
 void loop() {
-
+  
   //////////////////////////////////////////////////////////
   // Define Scrolling Text                                //
   //////////////////////////////////////////////////////////
@@ -127,12 +232,13 @@ void loop() {
   //////////////////////////////////////////////////////////
   // Full Screen SecKC - White
   tft.fillRect(0,0,128,128,ST77XX_WHITE); // Clear screen White
-  tft.drawBitmap(0,0,SecKCFullWhite,128,128,ST77XX_BLACK);  // Print 128x128 SecKC Image
-  delay(3000); // Keep image for 3 seconds
+  //tft.drawBitmap(0,0,SecKCFullWhite,128,128,ST77XX_BLACK);  // Print 128x128 SecKC Image
+  Alice128Func();
+  delay(4000); // Keep image for 3 seconds
   // Full Screen SecKC - Black
   tft.fillRect(0,0,128,128,ST77XX_WHITE); // Clear screen White
   tft.drawBitmap(0,0,SecKCFullBlack,128,128,ST77XX_BLACK); // Print 128x128 SecKC Image
-  delay(3000); // Keep images for 3 seconds
+  delay(4000); // Keep images for 3 seconds
 
   //////////////////////////////////////////////////////////
   // Clear Screen, Add SecKC to top corners, print Handle //
@@ -193,19 +299,6 @@ void loop() {
   // Clear Screen
   tft.fillRect(0,0,128,128,ST77XX_WHITE);
   
-  // Display Avatar Image
-  // Update h and w for size of avatar
-  int h = 128,w = 91, row, col, buffidx=0;
-  for (row=0; row<h; row++) { // For each scanline...
-    for (col=0; col<w; col++) { // For each pixel...
-      //To read from Flash Memory, pgm_read_XXX is required.
-      //Since image is stored as uint16_t, pgm_read_word is used as it uses 16bit address
-      // If needed, add "+X" to col or row to center avatar if less than 128 in size
-      tft.drawPixel(col+18, row, pgm_read_word(Avatar + buffidx));
-      buffidx++;
-    } // end pixel
-  }
-  delay(10000); // Keep Avatar up for 10 seconds
 
   //////////////////////////////////////////////////////////
   // end avatar. clear screen and prepare to start over   //
@@ -214,5 +307,25 @@ void loop() {
   
   tft.fillRect(0,0,128,128,ST77XX_BLACK); // Clear Screen Black
   Handle(); // Print hacker handle in Middle blue
- 
+
+  //////////////////////////////////////////////////////////
+  // Begin multi image print                              //
+  //////////////////////////////////////////////////////////
+
+  
+  tft.fillRect(0,0,128,128,ST77XX_BLACK);
+  HandleGlitchFunc();
+  delay(10000);
+  tft.fillRect(0,0,128,128,ST77XX_BLACK);
+  AvatarImage();
+  delay(10000);
+  tft.fillRect(0,0,128,128,ST77XX_BLACK);
+  HAKCERSkyline();
+  delay(10000);
+  tft.fillRect(0,0,128,128,ST77XX_BLACK);
+  AliceWallpaperFunc();
+  delay(10000);
+  tft.fillRect(0,0,128,128,ST77XX_BLACK);
+
+
 }
